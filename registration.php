@@ -213,7 +213,7 @@ if (isset($_POST['AddUser'])) {
                                                 <td><?php echo $row['address']; ?></td>
                                                 <td>
                                                     <!-- Edit and delete buttons -->
-                                                    <a href="registered-edit.php?user_id=<?php echo $row['user_id']; ?>" class="btn btn-info btn-sm">Edit</a>
+                                                    <a href="edit.php?user_id=<?php echo $row['user_id']; ?>" class="btn btn-info btn-sm">Edit</a>
                                                     <button type="button" value="<?php echo $row['user_id']; ?>" class="btn btn-danger btn-sm deletebtn">Delete</button>
                                                 </td>
                                             </tr>

@@ -47,7 +47,7 @@ if (isset($_POST['AddUser'])) {
         // Validate email format
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = "Invalid email format";
-            header("Location: registered.php");
+            header("Location: registration.php");
             exit();
         }
 
@@ -59,7 +59,7 @@ if (isset($_POST['AddUser'])) {
         // If email already exists
         if ($user) {
             $_SESSION['error'] = "Email already exists";
-            header("Location: registered.php");
+            header("Location: registration.php");
             exit();
         }
 
@@ -94,16 +94,16 @@ if (isset($_POST['AddUser'])) {
                 $_SESSION['status'] .= ". Email sending failed. Error: " . $mail->ErrorInfo;
             }
 
-            header("Location: registered.php");
+            header("Location: registration.php");
         } else {
             // Display an error message if the query fails
             $_SESSION['status'] = "User Registration Failed";
-            header("Location: registered.php");
+            header("Location: registration.php");
         }
     } else {
         // Display an error message if passwords do not match
         $_SESSION['status'] = "Password and Confirm Password do not match.!";
-        header("Location: registered.php");
+        header("Location: registration.php");
     }
 }
 
@@ -131,11 +131,11 @@ if (isset($_POST['UpdateUser'])) {
     if (mysqli_query($conn, $sql)) {
         // Redirect with a success message
         $_SESSION['status'] = "User Update Successfully";
-        header("Location: registered.php");
+        header("Location: registration.php");
     } else {
         // Display an error message if the query fails
         $_SESSION['status'] = "User Updating Failed";
-        header("Location: registered.php");
+        header("Location: registration.php");
     }
 }
 
@@ -155,11 +155,11 @@ if (isset($_POST['DeleteUserbtn'])) {
     if (mysqli_query($conn, $sql)) {
         // Redirect with a success message
         $_SESSION['status'] = "User Deleted Successfully";
-        header("Location: registered.php");
+        header("Location: registration.php");
     } else {
         // Display an error message if the query fails
         $_SESSION['status'] = "User Deleting Failed";
-        header("Location: registered.php");
+        header("Location: registration.php");
     }
 }
 ?>

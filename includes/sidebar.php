@@ -46,7 +46,7 @@
 
           <li class="nav-header">SETTINGS</li>
           <li class="nav-item">
-            <a href="registered.php" class="nav-link">
+            <a href="registration.php" class="nav-link">
               <i class="nav-icon far fa-user"></i>
               <p>
                 Admin Profile
@@ -56,7 +56,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="registered.php" class="nav-link">
+            <a href="registration.php" class="nav-link">
               <i class="nav-icon fa fa-users"></i>
               <p>
                 Registered User

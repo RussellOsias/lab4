@@ -62,12 +62,12 @@ if (isset($_POST['UpdateUser'])) {
             $_SESSION['status'] .= ". Email sending failed. Error: " . $mail->ErrorInfo;
         }
 
-        header("Location: registered.php");
+        header("Location: registration.php");
         exit(); // Ensure that no further code is executed after redirection
     } else {
         // Display an error message if the query fails
         $_SESSION['status'] = "User Updating Failed";
-        header("Location: registered.php");
+        header("Location: registration.php");
         exit(); // Ensure that no further code is executed after redirection
     }
 }
@@ -103,13 +103,13 @@ if (isset($_POST['UpdateUser'])) {
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Edit - Registered User</h3>
-                            <a href="registered.php" class="btn btn-danger btn-sm float-right">Back</a>
+                            <a href="registration.php" class="btn btn-danger btn-sm float-right">Back</a>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <form action="registered-edit.php" method="POST">
+                                    <form action="edit.php" method="POST">
                                         <div class="modal-body">
                                             <?php
                                                 // Check if user_id is set in the URL
