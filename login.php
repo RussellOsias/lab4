@@ -61,11 +61,11 @@ if (isset($_POST['login_btn'])) {
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'uchihareikata@gmail.com'; // Your Gmail email address
-                $mail->Password = 'qyki jszw moov wvhz'; // Your Gmail password
+                $mail->Username = 'reikatauchiha@gmail.com'; // SMTP username (your Gmail address)
+                $mail->Password = 'rhlt zyks rwyc mzpf'; // SMTP password (your Gmail password)                
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;
-                $mail->setFrom('uchihareikata@gmail.com', 'Russell Osias'); // Your email address and name
+                $mail->setFrom('reikatauchiha@gmail.com', 'Russell Osias'); // Your email address and name
                 $mail->addAddress($email); // Recipient's email address
                 $mail->isHTML(true);
                 $mail->Subject = 'Login Notification';
