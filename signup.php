@@ -49,7 +49,10 @@ session_start();
                                 <label for="">Phone Number</label>
                                 <input type="text" name="phone_number" class="form-control" placeholder="Phone Number" required>
                             </div>
-
+                            <div class="form-group">
+                                    <label for="">Age</label>
+                                    <input type="number" name="age" class="form-control" placeholder="Age" required>
+                                </div>
                             <div class="form-group">
                                 <label for="">Address</label>
                                 <input type="text" name="address" class="form-control" placeholder="Address" required>

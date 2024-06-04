@@ -48,52 +48,35 @@ if (isset($_POST['login_btn'])) {
             // Fetch user details from the database
             $row = mysqli_fetch_assoc($result);
 
-            // Store user ID in session to indicate successful login
-            $_SESSION['user_id'] = $row['user_ID'];
-
-            // Set the authentication session variable
-            $_SESSION['auth'] = true; // This line is added to indicate successful authentication
-
-            // Send email notification
-            $mail = new PHPMailer(true);
-            try {
-                // Server settings
-                $mail->isSMTP();
-                $mail->Host = 'smtp.gmail.com';
-                $mail->SMTPAuth = true;
-                $mail->Username = 'reikatauchiha@gmail.com'; // SMTP username (your Gmail address)
-                $mail->Password = 'rhlt zyks rwyc mzpf'; // SMTP password (your Gmail password)                
-                $mail->SMTPSecure = 'tls';
-                $mail->Port = 587;
-                $mail->setFrom('reikatauchiha@gmail.com', 'Russell Osias'); // Your email address and name
-                $mail->addAddress($email); // Recipient's email address
-                $mail->isHTML(true);
-                $mail->Subject = 'Login Notification';
-                $mail->Body = 'You have successfully logged in to our website.';
-
-                // Send email
-                $mail->send();
-
-                // Redirect to index.php after sending the email
-                header("Location: index.php");
-                exit();
-            } catch (Exception $e) {
-                // Handle errors if email sending fails
-                $_SESSION['status'] = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                header("Location: login.php");
-                exit();
+            // Check if the user is verified
+            if ($row['verify'] == 'not verified') {
+                $_SESSION['status'] = "Please verify your email to login";
+                header('Location: login.php');
+                exit(0);
             }
+
+            // Set session variables for authentication
+            $_SESSION['auth'] = true; // This line is added to indicate successful authentication
+            
+            // Update user status to "active" in the database
+            $user_id = $row['user_id'];
+            $update_status_query = "UPDATE user_profile SET status = 'active' WHERE user_id = '$user_id'";
+            mysqli_query($conn, $update_status_query);
+
+            // Redirect to the home page after successful login
+            header("Location: index.php");
+            exit(0);
         } else {
             // If no matching credentials found, set error message and redirect to login page
             $_SESSION['status'] = "Invalid email or password";
             header("Location: login.php");
-            exit();
+            exit(0);
         }
     } else {
         // If database query fails, set error message with error details and redirect to login page
         $_SESSION['status'] = "Error: " . mysqli_error($conn);
         header("Location: login.php");
-        exit();
+        exit(0);
     }
 }
 ?>
@@ -153,7 +136,7 @@ if (isset($_POST['login_btn'])) {
                             </div>
                         </form>
 
-                        <!-- Sign Up link -->
+                        <!-- Verification link -->
                         <div class="text-center">
                             <p>Don't have an account? <a href="signup.php" class="btn-sm">Sign Up</a></p>
                         </div>
@@ -167,3 +150,4 @@ if (isset($_POST['login_btn'])) {
 <!-- Include footer and script files -->
 <?php include('includes/script.php'); ?>
 <?php include('includes/footer.php'); ?>
+

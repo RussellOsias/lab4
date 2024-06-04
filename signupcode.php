@@ -21,6 +21,14 @@ if (isset($_POST['signup_btn'])) {
     $phone_number = $_POST['phone_number'];   
     $address = $_POST['address'];   
     $password = $_POST['password'];   
+    $age = $_POST['age'];
+
+    // Check if the user is at least 13 years old
+    if ($age < 13) {
+        $_SESSION['status'] = "You must be 13 years old or above to use this website.";
+        header('Location: signup.php');
+        exit();
+    }
 
     // Check if the email already exists in the database
     $check_email_query = "SELECT * FROM user_profile WHERE email='$email' LIMIT 1 ";
@@ -33,8 +41,8 @@ if (isset($_POST['signup_btn'])) {
         exit();
     } else {
         // Insert user data into the database
-        $insert_query = "INSERT INTO user_profile (full_name, email, phone_number, address, password) 
-                         VALUES ('$full_name', '$email', '$phone_number', '$address', '$password')";
+        $insert_query = "INSERT INTO user_profile (full_name, email, phone_number, address, password, age) 
+                         VALUES ('$full_name', '$email', '$phone_number', '$address', '$password', '$age')";
         
         if(mysqli_query($conn, $insert_query)) {
             // Account created successfully

@@ -5,7 +5,6 @@ session_start();
 include('config/db_conn.php');
 // Include file for authentication check
 
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -63,9 +62,13 @@ if (isset($_POST['AddUser'])) {
             exit();
         }
 
+        // Define default values for status and verify fields
+        $status = "active";
+        $verify = "not verified";
+
         // SQL query to insert user data into the database
-        $sql = "INSERT INTO user_profile (full_name,email,phone_number,address,password)
-                    VALUES ('$full_name','$email','$phone_number','$address','$password')";
+        $sql = "INSERT INTO user_profile (full_name,email,phone_number,address,password,status,verify)
+                    VALUES ('$full_name','$email','$phone_number','$address','$password','$status','$verify')";
 
         if (mysqli_query($conn, $sql)) {
             // Redirect with a success message
