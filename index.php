@@ -1,36 +1,30 @@
 <?php
-// Start the session to manage user authentication
-session_start();
+    session_start(); // Start the session to manage user authentication
 
-// Check if the user is not authenticated, redirect to login page
-if (!isset($_SESSION['auth'])) {
-    $_SESSION['status'] = "Please log in to access this page";
-    header('Location: login.php');
-    exit(0);
-}
+    if (!isset($_SESSION['auth'])) { // Check if the user is not authenticated
+        $_SESSION['status'] = "Please log in to access this page"; // Set status message for unauthenticated access
+        header('Location: login.php'); // Redirect to the login page
+        exit(0); // Stop further script execution
+    }
 
-// Include the header file
-include('includes/header.php');
+    include('includes/header.php'); // Include the header file
+    include('config/db_conn.php'); // Include file for database connection
 
-// Include file for database connection
-include('config/db_conn.php');
+    use PHPMailer\PHPMailer\PHPMailer; // Use PHPMailer class for sending emails
+    use PHPMailer\PHPMailer\Exception; // Use PHPMailer Exception class
 
-// Include PHPMailer classes
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require 'phpmailer/src/Exception.php';
-require 'phpmailer/src/PHPMailer.php';
-require 'phpmailer/src/SMTP.php';
+    require 'phpmailer/src/Exception.php'; // Include the PHPMailer Exception file
+    require 'phpmailer/src/PHPMailer.php'; // Include the PHPMailer main file
+    require 'phpmailer/src/SMTP.php'; // Include the PHPMailer SMTP file
 ?>
 
 <?php
-// Include authentication check
-include('authentication.php');
-include('includes/header.php');
-include('includes/topbar.php'); // Include the topbar.php file here
-include('includes/sidebar.php');
+    include('authentication.php'); // Include authentication check
+    include('includes/header.php'); // Include the header file
+    include('includes/topbar.php'); // Include the topbar.php file
+    include('includes/sidebar.php'); // Include the sidebar.php file
 ?>
+
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
