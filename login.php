@@ -20,7 +20,7 @@ require 'phpmailer/src/SMTP.php';
 // Check if the user is already authenticated and redirect to index page if so
 if (isset($_SESSION['auth'])) {
     $_SESSION['status'] = "You are already logged In"; // Set status message
-    header('Location: index.php'); // Redirect to the index page
+    header('Location: registration.php'); // Redirect to the index page
     exit(0); // Stop further script execution
 }
 
@@ -97,13 +97,14 @@ if (isset($_POST['login_btn'])) { // Check if the login button is clicked
             $update_status_query = "UPDATE user_profile SET status = 'active' WHERE user_id = '$user_id'"; // Prepare SQL query to update user status
             mysqli_query($conn, $update_status_query); // Execute the SQL query to update user status
 
-            // Debugging: Print session variables
-            echo '<pre>';
-            print_r($_SESSION);
-            echo '</pre>';
+            // Update session variables with user information
+            $_SESSION['user_id'] = $row['user_id']; // Update session variable for user ID
+            $_SESSION['full_name'] = $row['full_name']; // Update session variable for full name
+            $_SESSION['email'] = $row['email']; // Update session variable for email
+            // Add more session variables as needed
 
             // Redirect to the home page after successful login
-            header("Location: index.php"); // Redirect to the home page
+            header("Location: registration.php"); // Redirect to the home page
             exit(0); // Stop further execution of the script
         } else {
             // If no matching credentials found, set error message and redirect to login page
@@ -124,6 +125,7 @@ if (isset($_POST['login_btn'])) { // Check if the login button is clicked
 <div class="section">
     <div class="container">
         <div class="row justify-content-center">
+            <
             <div class="col-md-5 my-5">
                 <div class="card my-5">
                     <div class="card-header bg-light">
@@ -147,45 +149,43 @@ if (isset($_POST['login_btn'])) { // Check if the login button is clicked
                         }
                         ?>
 
-                        <!-- Include any other message file if needed -->
-                        <?php
-                        include('message.php');
-                        ?>
-
-                        <!-- Login Form -->
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                            <div class="form-group">
-                                <label for="">Email</label>
-                                <span></span>
-                                <!-- Email input field -->
-                                <input type="text" name="email" class="form-control" placeholder="Email" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Password</label>
-                                <!-- Password input field -->
-                                <input type="password" name="password" class="form-control" placeholder="Password" required>
-                            </div>
-
-                            <hr>
-
-                            <div class="modal-footer">
-                                <!-- Submit button for form -->
-                                <button type="submit" name="login_btn" class="btn btn-primary btn-block">Login</button>
-                            </div>
-                        </form>
-
-                        <!-- Verification link -->
-                        <div class="text-center">
-                            <p>Don't have an account? <a href="signup.php" class="btn-sm">Sign Up</a></p>
+                        <!-- Include any other message file ifneeded -->
+<?php
+                     include('message.php');
+                     ?>
+                                         <!-- Login Form -->
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                        <div class="form-group">
+                            <label for="">Email</label>
+                            <span></span>
+                            <!-- Email input field -->
+                            <input type="text" name="email" class="form-control" placeholder="Email" required>
                         </div>
+
+                        <div class="form-group">
+                            <label for="">Password</label>
+                            <!-- Password input field -->
+                            <input type="password" name="password" class="form-control" placeholder="Password" required>
+                        </div>
+
+                        <hr>
+
+                        <div class="modal-footer">
+                            <!-- Submit button for form -->
+                            <button type="submit" name="login_btn" class="btn btn-primary btn-block">Login</button>
+                        </div>
+                    </form>
+
+                    <!-- Verification link -->
+                    <div class="text-center">
+                        <p>Don't have an account? <a href="signup.php" class="btn-sm">Sign Up</a></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+</div>
 <!-- Include footer and script files -->
 <?php include('includes/script.php'); ?>
 <?php include('includes/footer.php'); ?>

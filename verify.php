@@ -29,9 +29,9 @@ if (isset($_POST['verify_btn'])) {
         $update_query = "UPDATE user_profile SET verify = 'verified' WHERE user_id = '$user_id'"; // SQL query to update user status
 
         if (mysqli_query($conn, $update_query)) { // If update query is successful
-            // Successful verification, redirect to index.php
+            // Successful verification, redirect to registration.php
             $_SESSION['auth'] = true; // Set authentication status in the session to indicate successful verification
-            header("Location: index.php"); // Redirect to index page
+            header("Location: registration.php"); // Redirect to index page
             exit(); // Stop further execution
         } else {
             $_SESSION['status'] = "Error updating verification status: " . mysqli_error($conn); // Set error message
