@@ -49,24 +49,15 @@ session_start();
                                 <label for="">Phone Number</label>
                                 <input type="text" name="phone_number" class="form-control" placeholder="Phone Number" required>
                             </div>
-
                             <div class="form-group">
-                                    <label for="birthdate">Birthdate</label>
-                                    <input type="date" class="form-control" id="birthdate" name="birthdate" value="<?php echo $userProfile['birthdate']; ?>" max="<?php echo date('Y-m-d', strtotime('-13 years')); ?>">
-                                    <small class="form-text text-muted">You must be at least 13 years old.</small>
-                                </div>
+                                <label for="birthdate">Birthdate</label>
+                                <input type="date" class="form-control" id="birthdate" name="birthdate" value="<?php echo $userProfile['birthdate']; ?>" max="<?php echo date('Y-m-d', strtotime('-13 years')); ?>" required>
+                                <small class="form-text text-muted">You must be at least 13 years old.</small>
+                            </div>
                             <div class="form-group">
                                 <label for="">Address</label>
                                 <input type="text" name="address" class="form-control" placeholder="Address" required>
                             </div>
-
-                            <div class="form-group">
-                                <label for="">Photo</label>
-                                <input type="file" name="photo" class="form-control-file" required>
-                            </div>
-
-                            
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">

@@ -4,15 +4,21 @@ session_start();
 
 // Include database connection
 include('config/db_conn.php');
+include('includes/header.php');
 
+include('includes/sidebar.php');
+include('config/db_conn.php');
 // Check if user is logged in, if not, redirect to login page
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
 
-// Fetch all user profiles with profile pictures
-$query = "SELECT user_id, full_name, photo FROM user_profile WHERE photo IS NOT NULL";
+// Get the logged-in user's ID
+$user_id = $_SESSION['user_id'];
+
+// Fetch all user profiles with profile pictures and bios except the logged-in user
+$query = "SELECT user_id, full_name, photo, bio, address, phone_number, birthdate, gender, citizenship, nationality, religion, marital_status FROM user_profile WHERE photo IS NOT NULL AND user_id != '$user_id'";
 $result = mysqli_query($conn, $query);
 
 // Check if query was successful
@@ -37,6 +43,12 @@ if ($result) {
             .profile-img {
                 width: 100%;
                 height: auto;
+            }
+            .card-title {
+                font-weight: bold;
+            }
+            .collapse-content {
+                margin-top: 10px;
             }
         </style>
     </head>
@@ -103,10 +115,33 @@ if ($result) {
                                 <div class="col-md-3">
                                     <div class="card profile-card">
                                         <!-- Display profile picture from database -->
-                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row['photo']); ?>" class="card-img-top profile-img" alt="Profile Picture">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?php echo $row['full_name']; ?></h5>
-                                        </div>
+                                        <?php if (!empty($row['photo'])) : ?>
+                                            <img src="<?php echo $row['photo']; ?>" class="card-img-top profile-img" alt="Profile Picture">
+                                        <?php else : ?>
+                                            <img src="assets/dist/img/default-avatar.jpg" class="card-img-top profile-img" alt="Default Avatar">
+                                        <?php endif; ?>
+                                             <div class="card-body">
+                                                <h5 class="card-title"><?php echo $row['full_name']; ?></h5>
+                                                <p class="card-text"><strong>Bio:</strong> <?php echo $row['bio']; ?></p>
+                                                <!-- Drop-down button for additional information -->
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#collapseInfo<?php echo $row['user_id']; ?>" aria-expanded="false" aria-controls="collapseInfo<?php echo $row['user_id']; ?>">
+                                                            View More
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="collapse collapse-content" id="collapseInfo<?php echo $row['user_id']; ?>">
+                                                    <p><strong>Address:</strong> <?php echo $row['address']; ?></p>
+                                                    <p><strong>Phone Number:</strong> <?php echo $row['phone_number']; ?></p>
+                                                    <p><strong>Birthdate:</strong> <?php echo date("F j, Y", strtotime($row['birthdate'])); ?></p>
+                                                    <p><strong>Gender:</strong> <?php echo $row['gender']; ?></p>
+                                                    <p><strong>Citizenship:</strong> <?php echo $row['citizenship']; ?></p>
+                                                    <p><strong>Nationality:</strong> <?php echo $row['nationality']; ?></p>
+                                                    <p><strong>Religion:</strong> <?php echo $row['religion']; ?></p>
+                                                    <p><strong>Marital Status:</strong> <?php echo $row['marital_status']; ?></p>
+                                                </div>
+                                            </div>
                                     </div>
                                 </div>
                                 <?php
@@ -126,14 +161,9 @@ if ($result) {
             <!-- /.control-sidebar -->
 
             <!-- Main Footer -->
-            <footer class="main-footer">
-                <!-- To the right -->
-                <div class="float-right d-none d-sm-inline">
-                    Anything you want
-                </div>
-                <!-- Default to the left -->
-                <strong>Footer here</strong>
-            </footer>
+        
+                <?php include('includes/footer.php'); ?>
+            
         </div>
         <!-- ./wrapper -->
 

@@ -282,6 +282,7 @@ $userProfile = mysqli_fetch_assoc($result);
 
 
 <?php include('includes/script.php'); ?>
+<?php include('includes/footer.php'); ?>
 
 <script>
     // JavaScript to display selected profile picture

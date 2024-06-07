@@ -10,10 +10,10 @@ ob_start();
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="index3.html" class="nav-link">Home</a>
+            <a href="registration.php" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Contact</a>
+            <a href="contact.php" class="nav-link">Contact</a>
         </li>
     </ul>
 
@@ -23,16 +23,17 @@ ob_start();
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">
                     <?php  
-                    if(isset($_SESSION['auth']) && isset($_SESSION['auth_user'])) {
-                        echo $_SESSION['auth_user']['full_name'];
-                    } else {
+                    if(isset($_SESSION['auth']) && isset($_SESSION['full_name'])) {
+                        echo $_SESSION['full_name'];
+                    } else if(isset($_SESSION['auth'])) {
                         echo "Logged In";
+                    } else {
+                        echo "";
                     }
                     ?>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    
-                    <form action="home.php" method="POST">
+                    <form action="logout.php" method="POST">
                         <button type="submit" name="logout_btn" class="dropdown-item">Log Out</button>
                     </form>
                 </div>

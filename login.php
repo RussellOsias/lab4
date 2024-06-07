@@ -125,7 +125,7 @@ if (isset($_POST['login_btn'])) { // Check if the login button is clicked
 <div class="section">
     <div class="container">
         <div class="row justify-content-center">
-            <
+            
             <div class="col-md-5 my-5">
                 <div class="card my-5">
                     <div class="card-header bg-light">
