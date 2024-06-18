@@ -70,7 +70,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submit
             echo "<script>alert('File is not an image.');</script>"; // Show an alert message.
             $uploadOk = 0; // Set upload status as not okay.
         }
-    
         // Check file size
         if ($_FILES["photo"]["size"] > 50000000) { // Check if the uploaded file is larger than 50MB.
             echo "<script>alert('Sorry, your file is too large.');</script>"; // Show an alert if the file is too large.
