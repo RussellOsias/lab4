@@ -96,16 +96,16 @@ session_start();
 
 <!-- JavaScript for password confirmation validation -->
 <script>
-    function validateForm() {
-        var password = document.getElementById("password").value;
-        var confirm_password = document.getElementById("confirm_password").value;
+    function validateForm() { // Define a function to validate the form
+        var password = document.getElementById("password").value; // Get the value entered in the password field
+        var confirm_password = document.getElementById("confirm_password").value; // Get the value entered in the confirm password field
 
-        if (password != confirm_password) {
-            document.getElementById("password_message").innerHTML = "Passwords do not match";
-            return false;
-        } else {
-            document.getElementById("password_message").innerHTML = "";
-            return true;
+        if (password != confirm_password) { // Check if the passwords do not match
+            document.getElementById("password_message").innerHTML = "Passwords do not match"; // Display an error message if passwords do not match
+            return false; // Prevent form submission
+        } else { 
+            document.getElementById("password_message").innerHTML = ""; // Clear any previous error message if passwords match
+            return true; // Allow form submission
         }
     }
 </script>

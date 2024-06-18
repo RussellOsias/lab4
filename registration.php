@@ -20,111 +20,113 @@ require 'phpmailer/src/PHPMailer.php';
 require 'phpmailer/src/SMTP.php';
 
 // Fetch user profile data from the database based on the logged-in user's ID
-$user_id = $_SESSION['user_id'];
-$query = "SELECT * FROM user_profile WHERE user_id = '$user_id'";
-$result = mysqli_query($conn, $query);
-$userProfile = mysqli_fetch_assoc($result);
+$user_id = $_SESSION['user_id']; // Get the user ID from the session.
+$query = "SELECT * FROM user_profile WHERE user_id = '$user_id'"; // Prepare a query to select all columns from the user_profile table where the user_id matches the current user's ID.
+$result = mysqli_query($conn, $query); // Execute the query and store the result.
+$userProfile = mysqli_fetch_assoc($result); // Fetch the result as an associative array and store it in the $userProfile variable.
 
 // Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") { // Check if the form has been submitted via POST method.
     // Initialize variables with empty strings if they do not exist
-    $fullName = isset($_POST['fullName']) ? $_POST['fullName'] : '';
-    $email = isset($_POST['email']) ? $_POST['email'] : '';
-    $phoneNumber = isset($_POST['phoneNumber']) ? $_POST['phoneNumber'] : '';
-    $address = isset($_POST['address']) ? $_POST['address'] : '';
-    $birthdate = isset($_POST['birthdate']) ? $_POST['birthdate'] : '';
-    $bio = isset($_POST['bio']) ? $_POST['bio'] : '';
-    $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
-    $citizenship = isset($_POST['citizenship']) ? $_POST['citizenship'] : '';
-    $nationality = isset($_POST['nationality']) ? $_POST['nationality'] : '';
-    $religion = isset($_POST['religion']) ? $_POST['religion'] : '';
-    $maritalStatus = isset($_POST['maritalStatus']) ? $_POST['maritalStatus'] : '';
+    $fullName = isset($_POST['fullName']) ? $_POST['fullName'] : ''; // Get the full name from the form or set it to an empty string if not available.
+    $email = isset($_POST['email']) ? $_POST['email'] : ''; // Get the email from the form or set it to an empty string if not available.
+    $phoneNumber = isset($_POST['phoneNumber']) ? $_POST['phoneNumber'] : ''; // Get the phone number from the form or set it to an empty string if not available.
+    $address = isset($_POST['address']) ? $_POST['address'] : ''; // Get the address from the form or set it to an empty string if not available.
+    $birthdate = isset($_POST['birthdate']) ? $_POST['birthdate'] : ''; // Get the birthdate from the form or set it to an empty string if not available.
+    $bio = isset($_POST['bio']) ? $_POST['bio'] : ''; // Get the bio from the form or set it to an empty string if not available.
+    $gender = isset($_POST['gender']) ? $_POST['gender'] : ''; // Get the gender from the form or set it to an empty string if not available.
+    $citizenship = isset($_POST['citizenship']) ? $_POST['citizenship'] : ''; // Get the citizenship from the form or set it to an empty string if not available.
+    $nationality = isset($_POST['nationality']) ? $_POST['nationality'] : ''; // Get the nationality from the form or set it to an empty string if not available.
+    $religion = isset($_POST['religion']) ? $_POST['religion'] : ''; // Get the religion from the form or set it to an empty string if not available.
+    $maritalStatus = isset($_POST['maritalStatus']) ? $_POST['maritalStatus'] : ''; // Get the marital status from the form or set it to an empty string if not available.
 
     // Update user profile in the database
-    if (empty($bio)) {
-        $bio = "What's on your mind? Be creative!"; // Default bio message
+    if (empty($bio)) { // Check if the bio is empty.
+        $bio = "What's on your mind? Be creative!"; // If empty, set a default bio message.
     }
-
-    $updateQuery = "UPDATE user_profile SET full_name='$fullName', email='$email', phone_number='$phoneNumber', address='$address', birthdate='$birthdate', bio='$bio', gender='$gender', citizenship='$citizenship', nationality='$nationality', religion='$religion', marital_status='$maritalStatus' WHERE user_id='$user_id'";
-    $updateResult = mysqli_query($conn, $updateQuery);
-
-    if ($updateResult) {
-        echo "<script>alert('Profile updated successfully');</script>";
+    
+    $updateQuery = "UPDATE user_profile SET full_name='$fullName', email='$email', phone_number='$phoneNumber', address='$address', birthdate='$birthdate', bio='$bio', gender='$gender', citizenship='$citizenship', nationality='$nationality', religion='$religion', marital_status='$maritalStatus' WHERE user_id='$user_id'"; // Prepare an SQL query to update the user profile with the new data.
+    
+    $updateResult = mysqli_query($conn, $updateQuery); // Execute the update query.
+    
+    if ($updateResult) { // Check if the update was successful.
+        echo "<script>alert('Profile updated successfully');</script>"; // If successful, show an alert message.
     } else {
+        // You can add an else condition here to handle errors if needed.
     }
-
+    
     // Handle profile picture upload
-    if (!empty($_FILES["photo"]["name"])) {
-        $targetDirectory = "uploads/";
-        $targetFile = $targetDirectory . basename($_FILES["photo"]["name"]);
-        $uploadOk = 1;
-        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-
-        // Check if image file is a actual image or fake image
-        $check = getimagesize($_FILES["photo"]["tmp_name"]);
-        if ($check !== false) {
-            $uploadOk = 1;
-        } else {
-            echo "<script>alert('File is not an image.');</script>";
-            $uploadOk = 0;
+    if (!empty($_FILES["photo"]["name"])) { // Check if a file was uploaded.
+        $targetDirectory = "uploads/"; // Set the directory where the file will be saved.
+        $targetFile = $targetDirectory . basename($_FILES["photo"]["name"]); // Set the complete path for the uploaded file.
+        $uploadOk = 1; // Initialize upload status as okay.
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)); // Get the file extension of the uploaded file.
+    
+        // Check if image file is an actual image or fake image
+        $check = getimagesize($_FILES["photo"]["tmp_name"]); // Check if the file is an actual image.
+        if ($check !== false) { // If the file is an image,
+            $uploadOk = 1; // Set upload status as okay.
+        } else { // If the file is not an image,
+            echo "<script>alert('File is not an image.');</script>"; // Show an alert message.
+            $uploadOk = 0; // Set upload status as not okay.
         }
-
+    
         // Check file size
-        if ($_FILES["photo"]["size"] > 50000000) {
-            echo "<script>alert('Sorry, your file is too large.');</script>";
-            $uploadOk = 0;
+        if ($_FILES["photo"]["size"] > 50000000) { // Check if the uploaded file is larger than 50MB.
+            echo "<script>alert('Sorry, your file is too large.');</script>"; // Show an alert if the file is too large.
+            $uploadOk = 0; // Set upload status as not okay.
         }
-
+        
         // Allow certain file formats
-        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
-            echo "<script>alert('Sorry, only JPG, JPEG, PNG & GIF files are allowed.');</script>";
-            $uploadOk = 0;
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") { // Check if the file type is not one of the allowed types.
+            echo "<script>alert('Sorry, only JPG, JPEG, PNG & GIF files are allowed.');</script>"; // Show an alert if the file type is not allowed.
+            $uploadOk = 0; // Set upload status as not okay.
         }
-
+        
         // Check if $uploadOk is set to 0 by an error
-        if ($uploadOk == 0) {
-            echo "<script>alert('Sorry, your file was not uploaded.');</script>";
+        if ($uploadOk == 0) { // Check if there was an error with the upload.
+            echo "<script>alert('Sorry, your file was not uploaded.');</script>"; // Show an alert that the file was not uploaded.
         // if everything is ok, try to upload file
         } else {
-            if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
-                $photo = $targetFile;
-
+            if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) { // Try to move the uploaded file to the target directory.
+                $photo = $targetFile; // Save the file path in the $photo variable.
+        
                 // Update user profile with new profile picture in the database
-                $updateQuery = "UPDATE user_profile SET photo='$photo' WHERE user_id=" . $userProfile['user_id'];
-                $updateResult = mysqli_query($conn, $updateQuery);
-
-                if ($updateResult) {
-                    echo "<script>alert('Profile picture updated successfully');</script>";
+                $updateQuery = "UPDATE user_profile SET photo='$photo' WHERE user_id=" . $userProfile['user_id']; // Prepare an SQL query to update the profile picture in the database.
+                $updateResult = mysqli_query($conn, $updateQuery); // Execute the update query.
+        
+                if ($updateResult) { // Check if the update was successful.
+                    echo "<script>alert('Profile picture updated successfully');</script>"; // Show an alert if the profile picture was updated successfully.
                 } else {
-                    echo "<script>alert('Failed to update profile picture');</script>";
+                    echo "<script>alert('Failed to update profile picture');</script>"; // Show an alert if the profile picture update failed.
                 }
             } else {
-                echo "<script>alert('Sorry, there was an error uploading your file.');</script>";
+                echo "<script>alert('Sorry, there was an error uploading your file.');</script>"; // Show an alert if
             }
         }
-    }
+    }        
 
-    // Check if the form submission is for changing the password
-    if (isset($_POST['change_password'])) {
-        // Retrieve passwords from form
-        $newPassword = isset($_POST['newPassword'])? $_POST['newPassword'] : '';
-        $confirmNewPassword = isset($_POST['confirmNewPassword'])? $_POST['confirmNewPassword'] : '';
+   // Check if the form submission is for changing the password
+if (isset($_POST['change_password'])) { // Check if the 'change_password' form was submitted.
+    // Retrieve passwords from form
+    $newPassword = isset($_POST['newPassword']) ? $_POST['newPassword'] : ''; // Get the new password from the form or set it to an empty string if not available.
+    $confirmNewPassword = isset($_POST['confirmNewPassword']) ? $_POST['confirmNewPassword'] : ''; // Get the confirmation of the new password from the form or set it to an empty string if not available.
 
-        // Validate new password
-        if ($newPassword === $confirmNewPassword) {
-            // Update the password in the database
-            $updatePasswordQuery = "UPDATE user_profile SET password='$newPassword' WHERE user_id=" . $userProfile['user_id'];
-            $updatePasswordResult = mysqli_query($conn, $updatePasswordQuery);
+    // Validate new password
+    if ($newPassword === $confirmNewPassword) { // Check if the new password and confirmation match.
+        // Update the password in the database
+        $updatePasswordQuery = "UPDATE user_profile SET password='$newPassword' WHERE user_id=" . $userProfile['user_id']; // Prepare an SQL query to update the password in the database.
+        $updatePasswordResult = mysqli_query($conn, $updatePasswordQuery); // Execute the update query.
 
-            if ($updatePasswordResult) {
-                echo "<script>alert('Password changed successfully');</script>";
-            } else {
-                echo "<script>alert('Failed to change password');</script>";
-            }
+        if ($updatePasswordResult) { // Check if the update was successful.
+            echo "<script>alert('Password changed successfully');</script>"; // Show an alert if the password was changed successfully.
         } else {
-            echo "<script>alert('New password and confirm password do not match');</script>";
+            echo "<script>alert('Failed to change password');</script>"; // Show an alert if the password change failed.
         }
+    } else {
+        echo "<script>alert('New password and confirm password do not match');</script>"; // Show an alert if the new password and confirmation do not match.
     }
+}
 }
 
 // Refresh user profile data after update
